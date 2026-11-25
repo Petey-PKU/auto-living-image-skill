@@ -13,20 +13,39 @@ Download or clone this repository. Copy the entire [living-image-roi](living-ima
 | [Codex](https://learn.chatgpt.com/docs/build-skills) | `~/.agents/skills/` | `$living-image-roi` |
 | [Claude Code](https://code.claude.com/docs/en/skills) | `~/.claude/skills/` | `/living-image-roi` |
 
-Open Living Image, load the dataset list, and open the target workbook. The agent session needs a desktop control tool with access to those apps. Python 3 and `openpyxl` are required only for the optional Prism export.
+Use a local Windows session with a desktop control tool available to the agent. Python 3 and `openpyxl` are required only for the optional Prism export.
 
-## Quick start
+## Run a measurement
 
-> Measure the tumor ROIs for Demo A at 24 h, mice 1–3, from left to right. Use the first fluorescence image, circular Auto 1 at 50%, Binning 2, and no smoothing. Append Avg Radiant Efficiency and the image ID to the open Excel workbook. Leave the dataset open for review.
+### You open
 
-1. **Load the image.** Expand the matching sequence in the Living Image Browser and open the agreed image.
-2. **Measure.** In **Tool Palette → ROI Tools**, choose **Auto 1** from the circular ROI menu. Verify each contour against the intended target, then open **Measure ROIs**.
+1. Open **Living Image** and load the dataset list in its **Browser**. The agent selects the individual images.
+2. Open **Excel** and the workbook you want filled, either a blank workbook or an existing results file. Grant desktop access to the two apps if the client prompts.
 
-   ![Living Image Tool Palette with the circular ROI menu open and Auto 1 visible](docs/images/living-image-auto-1.png)
+### You tell the agent
 
-3. **Record.** Append one row per mouse to Excel, keeping the ROI metric, units, and source image ID together. The Excel screenshot contains synthetic example values.
+- **What to measure.** Give the dataset or the group, time point, and mouse IDs. Specify the target (tumor or organs) and how mice and organs are arranged if their order is unclear.
+- **Which settings to use.** Give the exposure, ROI method and threshold, and metric if your protocol specifies them. For a new in vivo fluorescence run, the skill defaults to the first fluorescence image, circular Auto 1 at 50%, Binning 2, no smoothing, and Avg Radiant Efficiency.
+- **Where results go.** Name the destination worksheet if the workbook has several. Say whether to save new ROIs to the dataset or leave them open for review.
 
-   ![Excel showing three synthetic ROI measurements in long format](docs/images/excel-roi-example.png)
+> Measure the tumor ROIs for Demo A at 24 h, mice 1–3 from left to right. Use the default fluorescence settings. Append the results to Sheet1 in the open Excel workbook and save it. Leave the ROIs open for review.
+
+### The agent does
+
+1. **Find the image.** Match the requested dataset in the Browser, open the right exposure, and confirm the image ID and mouse order.
+2. **Measure the ROIs.** Check existing contours or apply the requested settings and draw new ones. Open **Measure ROIs**, read the requested column, and match each value to the correct animal or organ. Flag an ambiguous target for review.
+3. **Record and verify.** Append the measurements, units, and image IDs to the confirmed Excel sheet. Check the written rows against the measurement table and follow your save instructions.
+
+## Example
+
+![Real Living Image fluorescence image with three circular 50% tumor ROIs](docs/images/living-image-tumor-rois.jpg)
+
+*Actual Living Image capture showing three tumor ROIs. The overlay labels show totals. For averages, use the Avg Radiant Efficiency column in ROI Measurements.*
+
+| Living Image | Excel |
+| --- | --- |
+| ![Circular ROI menu showing Auto 1 in Living Image](docs/images/living-image-auto-1.png) | ![Excel showing three synthetic ROI measurements in long format](docs/images/excel-roi-example.png) |
+| **ROI Tools → Auto 1** | Example output with synthetic values |
 
 ## Prism export
 
